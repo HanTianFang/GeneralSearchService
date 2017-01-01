@@ -1,13 +1,9 @@
-package cn.edu.bjtu.weibo.impl;
+package cn.edu.bjtu.weibo.service.serviceImpl;
 
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
+
+
 
 import cn.edu.bjtu.weibo.model.*;
 import cn.edu.bjtu.weibo.service.GeneralSearchService;
@@ -21,19 +17,17 @@ public class GeneralSearchServiceImpl implements GeneralSearchService{
 	private static final EntityType User = null;
 
 	@SuppressWarnings("null")
-	@Override
 	public List<GeneralSR> getGeneralSearchedResult(String keyword,
 			int pageIndex, int numberPerPage) {
 		// TODO Auto-generated method stub
 		
 
 		 
-		//搜索用户名，假设SearchUserService实现类为SearchUserServiceImpl，不是请改
+		//搜索用户名，SearchUserService实现类为SearchUserServiceImpl
 			SearchUserServiceImpl Users = new SearchUserServiceImpl();
 			List<UserSR> SearchUserList = Users.getSearchedUserList(keyword, pageIndex, numberPerPage);
 			
 			List<GeneralSR> GeneralList = null;//建立GeneralSR列表，存储搜索结果
-
 			
 
 			GeneralSR a=null;
@@ -43,13 +37,13 @@ public class GeneralSearchServiceImpl implements GeneralSearchService{
 				GeneralList.add(a);
 			}
 
-			//搜索微博内容，假设SearchContentService实现类为SearchContentServiceImpl，不是请改正
+		//搜索微博内容，SearchContentService实现类为SearchContentServiceImpl
 		SearchContentServiceImpl Content = new SearchContentServiceImpl();
 		List<BaseContentSR> SearchedWeiboList = Content.getSearchedWeiboList(keyword, pageIndex, numberPerPage);
 		
 		GeneralSR b=null;
-	    for (BaseContentSR key : contentMap.keySet()) {
-			b.setResult(key);	
+		for(int j = 0;j<SearchedWeiboList.size();j++){
+			b.setResult(SearchedWeiboList.get(j));
 			b.setType(Weibo);
 			GeneralList.add(b);
 		}
@@ -67,6 +61,11 @@ public class GeneralSearchServiceImpl implements GeneralSearchService{
 		
 		
 		return GeneralPageList;
+	}
+
+	public void updateSearchIndex() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 
